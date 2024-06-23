@@ -8,12 +8,14 @@ class TunedMae(nn.Module):
         super().__init__()
         
         self.encoder = encoder
-        self.fc = nn.Linear(197 * 1024, 7)
+#         self.fc = nn.Linear(197 * 1024, 7)
+        self.fc = nn.Linear(1024, 7)
         
     def forward(self, x):
         encoded = self.encoder(x)
-        flattened = torch.flatten(encoded, start_dim=1)
-        out = self.fc(flattened)
+        encoded = encoded.mean(dim=1)
+#         flattened = torch.flatten(encoded, start_dim=1)
+        out = self.fc(encoded)
         return out
     
 
